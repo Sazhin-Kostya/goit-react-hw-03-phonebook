@@ -3,7 +3,8 @@ import { ContactForm } from './Form/Form';
 import { nanoid } from 'nanoid';
 import Contacts from './Contacts/Contacts';
 import Filter from './Filter/Filter';
-
+import { FormTitle, Container } from '../components/Form/Form.styled';
+import { GlobalStyle } from './GlobalStyle';
 export class App extends Component {
   state = {
     contacts: [
@@ -40,8 +41,12 @@ export class App extends Component {
 
   componentDidMount() {
     const contactsStart = localStorage.getItem('Contact');
-    const parseContacts = JSON.parse(contactsStart);
-    this.setState({ contacts: parseContacts });
+    if (contactsStart !== null) {
+      const parseContacts = JSON.parse(contactsStart);
+      this.setState({
+        contacts: parseContacts,
+      });
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -52,20 +57,21 @@ export class App extends Component {
 
   render() {
     const { contacts, filter } = this.state;
-    const visibleContacts = contacts.filter(contact =>
+    const filteredContacts = contacts.filter(contact =>
       contact.name.toLowerCase().includes(filter.toLowerCase())
     );
     return (
-      <>
-        <h1>Phonebook</h1>
+      <Container>
+        <FormTitle>Phonebook</FormTitle>
         <ContactForm newContact={this.addContact} />
-        <h2>Contacts</h2>
+        <FormTitle>Contacts</FormTitle>
         <Filter changeFilter={this.changeFilter} value={this.state.filter} />
         <Contacts
-          contacts={visibleContacts}
+          contacts={filteredContacts}
           deleteContact={this.deleteContact}
         />
-      </>
+        <GlobalStyle />
+      </Container>
     );
   }
 }

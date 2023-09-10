@@ -1,15 +1,25 @@
+import {
+  ContactList,
+  ContactItem,
+  ContactButton,
+  ContactItemContainer,
+} from './Contacts.styled';
 export default function Contacts({ contacts, deleteContact }) {
   return (
     <>
-      <ul>
+      <ContactList>
         {contacts.map(contact => (
-          <li key={contact.id}>
-            <span>{contact.name}:</span>
-            <span>{contact.number}</span>
-            <button onClick={() => deleteContact(contact.id)}>Удалить</button>
-          </li>
+          <ContactItem key={contact.id}>
+            <ContactItemContainer>
+              <span>{contact.name}:</span>
+              <span>{contact.number}</span>
+            </ContactItemContainer>
+            <ContactButton onClick={() => deleteContact(contact.id)}>
+              Удалить
+            </ContactButton>
+          </ContactItem>
         ))}
-      </ul>
+      </ContactList>
     </>
   );
 }
